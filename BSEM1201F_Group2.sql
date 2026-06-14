@@ -108,5 +108,25 @@ VALUES
 ('Alice Isatu', 'Bangura', '2001-07-30', 'Female', NULL, 'Kenema'),
 ('Nylander Franklyna Fatmata', 'Sesay', '2002-04-18', 'Female', NULL, 'Port Loko');
 
+SELECT * FROM Patient;
+INSERT SAMPLE DATA — HEALTH WORKERS (10 records)
+
+
+INSERT INTO Health_Worker (Full_Name, Role, Department)
+VALUES
+('Sheikh Umar Kanu',      'Doctor', 'General Medicine'),
+('Amadu Kamara',          'Doctor', 'Pediatrics'),
+('Hawa Kallon',           'Nurse',  'Maternity'),
+('Sulaiman Kallokoh',     'Doctor', 'Emergency'),
+('Osman Bah',             'Nurse',  'Outpatient'),
+('Santigie Foday Kamara', 'Doctor', 'Internal Medicine'),
+('Mariama Kamara',        'Nurse',  'Surgery'),
+('Dr. Ibrahim Sesay',     'Doctor', 'Cardiology'),
+('Nurse Fatmata Conteh',  'Nurse',  'Family Planning'),
+('Dr. Mohamed Bangura',   'Doctor', 'Dermatology');
+
+
+
+
 
 
