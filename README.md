@@ -15,9 +15,7 @@ A complete MySQL database solution for managing public health clinic operations 
 - [Features](#features)
 - [Setup & Installation](#setup--installation)
 - [Sample Queries](#sample-queries)
-- [File Structure](#file-structure)
 - [Notes](#notes)
-- [License](#license)
 
 ---
 
@@ -94,3 +92,54 @@ The script covers **essential SQL concepts**:
 2. **Run the script** using your MySQL client:
    ```bash
    mysql -u your_username -p
+
+## Sample Queries
+
+1. Female patients in Freetown
+   ```sql
+   SELECT First_Name, Last_Name, Phone_Number
+   FROM Patient
+   WHERE Gender = 'Female' AND Address = 'Freetown';
+
+2. Total treatment cost per diagnosis
+   ```sql
+   SELECT d.Condition_Name, SUM(t.Treatment_Cost) AS Total_Cost
+   FROM Medical_Diagnosis d
+   JOIN Treatment t ON d.Diagnoses_ID = t.Diagnoses_ID
+   GROUP BY d.Condition_Name
+   ORDER BY Total_Cost DESC;
+
+3. Appointments in February 2026 with cost > $200
+   ```sql
+   SELECT a.Visit_Date, p.First_Name, p.Last_Name, t.Treatment_Cost
+   FROM Appointment a
+   JOIN Patient p ON a.Patient_ID = p.Patient_ID
+   JOIN Medical_Diagnosis d ON a.Appointment_ID = d.Appointment_ID
+   JOIN Treatment t ON d.Diagnoses_ID = t.Diagnoses_ID
+   WHERE a.Visit_Date BETWEEN '2026-02-01' AND '2026-02-28'
+   AND t.Treatment_Cost > 200;
+
+4. Patients missing phone numbers
+   ```sql
+   SELECT COUNT(*) AS Missing_Phone_Number
+   FROM Patient
+   WHERE Phone_Number IS NULL;
+
+5. Average cost of treatments started in March 2026
+   ```sql
+   SELECT AVG(Treatment_Cost) AS Avg_March_Cost
+   FROM Treatment
+   WHERE Start_Date BETWEEN '2026-03-01' AND '2026-03-31';
+
+
+## Notes
+
+Dates – Sample data uses 2026 to remain future‑proof.
+
+CHECK constraint – Requires MySQL 8.0.16+ for full enforcement. Older versions ignore it but the script still runs.
+
+Foreign key order – Inserts respect dependency order: Patient → Health_Worker → Appointment → Medical_Diagnosis → Treatment.
+
+Renames – The original Diagnoses table is renamed to Medical_Diagnosis and Reason column to Visit_Reason for clarity.
+
+Realistic data – Patient names and addresses reflect Sierra Leonean cities (Freetown, Makeni, Bo, etc.). Medications are commonly used in public health.
