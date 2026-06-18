@@ -126,7 +126,17 @@ VALUES
 ('Mariama Kamara',        'Nurse',  'Surgery'),
 ('Dr. Ibrahim Sesay',     'Doctor', 'Cardiology'),
 ('Nurse Fatmata Conteh',  'Nurse',  'Family Planning'),
-('Dr. Mohamed Bangura',   'Doctor', 'Dermatology');
+('Dr. Mohamed Bangura',   'Doctor', 'Dermatology'),
+ ('Dr. Yusuf Sankoh', 'Doctor', 'Obstetrics'),
+('Nurse Hassanatu Koroma', 'Nurse', 'Pediatrics'),
+('Dr. Alhassan Conteh', 'Doctor', 'Orthopedics'),
+('Nurse Isata Bangura', 'Nurse', 'Emergency'),
+('Dr. Foday Sesay', 'Doctor', 'Radiology'),
+('Nurse Adama Kargbo', 'Nurse', 'General Medicine'),
+('Dr. Mohamed Jalloh', 'Doctor', 'Neurology'),
+('Nurse Fatima Sow', 'Nurse', 'Cardiology'),
+('Dr. Ibrahim Turay', 'Doctor', 'Oncology'),
+('Nurse Mariatu Bah', 'Nurse', 'Outpatient');
 
 SELECT * FROM Health_Worker
 
