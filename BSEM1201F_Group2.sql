@@ -492,23 +492,21 @@ ORDER BY Visit_Date DESC;
 
 -- AGGREGATE FUNCTIONS
 
-SELECT COUNT(*) AS Total_Patients FROM Patient;
+SELECT COUNT(*)  FROM Patient;
 
-SELECT COUNT(*) AS Total_Treatments FROM Treatment;
+SELECT COUNT(*)  FROM Treatment;
 
-SELECT AVG(Treatment_Cost) AS Average_Treatment_Cost FROM Treatment;
+SELECT AVG(Treatment_Cost)  FROM Treatment;
 
-SELECT AVG(Treatment_Cost) AS Average_Cost_February
-FROM Treatment
+SELECT AVG(Treatment_Cost) FROM Treatment
 WHERE Start_Date BETWEEN '2026-02-01' AND '2026-02-28';
 
-SELECT SUM(Treatment_Cost) AS Total_Treatment_Cost FROM Treatment;
+SELECT SUM(Treatment_Cost)  FROM Treatment;
 
-SELECT SUM(Treatment_Cost) AS Total_Cost_March
-FROM Treatment
+SELECT SUM(Treatment_Cost) FROM Treatment
 WHERE Start_Date BETWEEN '2026-03-01' AND '2026-03-31';
 
-SELECT MAX(Treatment_Cost) AS Highest_Treatment_Cost FROM Treatment;
+SELECT MAX(Treatment_Cost) FROM Treatment;
 
 SELECT MAX(Treatment_Cost) AS Highest_Cost_Per_Medicine, Medicine_Name
 FROM Treatment
@@ -523,11 +521,9 @@ GROUP BY Medicine_Name
 ORDER BY Lowest_Cost_Per_Medicine ASC;
 
 -- GROUP BY — Gender count 
-SELECT Gender, COUNT(*) AS Total
-FROM Patient
+SELECT Gender, COUNT(*) FROM Patient
 GROUP BY Gender;
 
 -- GROUP BY — Department count 
-SELECT Department, COUNT(*) AS Total_Workers
-FROM Health_Worker
+SELECT Department, COUNT(*) FROM Health_Worker
 GROUP BY Department;
