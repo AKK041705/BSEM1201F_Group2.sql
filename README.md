@@ -15,6 +15,7 @@ A complete MySQL database solution for managing public health clinic operations 
 - [Features](#features)
 - [Setup & Installation](#setup--installation)
 - [Sample Queries](#sample-queries)
+- [User Management](#user-management)
 - [Notes](#notes)
 
 ---
@@ -90,27 +91,32 @@ The script covers **essential SQL concepts**:
 1. **Download** the `BSEM1201F_Group2.sql` file.
 
 2. **Run the script** using your MySQL client:
-   ```bash
+```bash
    mysql -u your_username -p
+```
+
+---
 
 ## Sample Queries
 
 1. Female patients in Freetown
-   ```sql
+```sql
    SELECT First_Name, Last_Name, Phone_Number
    FROM Patient
    WHERE Gender = 'Female' AND Address = 'Freetown';
+```
 
 2. Total treatment cost per diagnosis
-   ```sql
+```sql
    SELECT d.Condition_Name, SUM(t.Treatment_Cost) AS Total_Cost
    FROM Medical_Diagnosis d
    JOIN Treatment t ON d.Diagnoses_ID = t.Diagnoses_ID
    GROUP BY d.Condition_Name
    ORDER BY Total_Cost DESC;
+```
 
 3. Appointments in February 2026 with cost > $200
-   ```sql
+```sql
    SELECT a.Visit_Date, p.First_Name, p.Last_Name, t.Treatment_Cost
    FROM Appointment a
    JOIN Patient p ON a.Patient_ID = p.Patient_ID
@@ -118,28 +124,91 @@ The script covers **essential SQL concepts**:
    JOIN Treatment t ON d.Diagnoses_ID = t.Diagnoses_ID
    WHERE a.Visit_Date BETWEEN '2026-02-01' AND '2026-02-28'
    AND t.Treatment_Cost > 200;
+```
 
 4. Patients missing phone numbers
-   ```sql
+```sql
    SELECT COUNT(*) AS Missing_Phone_Number
    FROM Patient
    WHERE Phone_Number IS NULL;
+```
 
 5. Average cost of treatments started in March 2026
-   ```sql
+```sql
    SELECT AVG(Treatment_Cost) AS Avg_March_Cost
    FROM Treatment
    WHERE Start_Date BETWEEN '2026-03-01' AND '2026-03-31';
+```
 
+---
+
+## User Management
+
+This project implements basic MySQL user management to demonstrate database security principles.
+
+### 👤 User Accounts
+
+Three user accounts were created, each with different privilege levels based on their role:
+
+| Username | Role | Privileges |
+|----------|------|------------|
+| `Abdul_Karim` | Database Administrator | ALL PRIVILEGES |
+| `Rayan_Martin` | Senior Collaborator | SELECT, INSERT, UPDATE, FILE |
+| `Foday_Kamara` | Limited Collaborator | SELECT, INSERT |
+
+### Creating User Accounts
+```sql
+CREATE USER 'Abdul_Karim'@'localhost' IDENTIFIED BY 'Karim@2026';
+CREATE USER 'Rayan_Martin'@'localhost' IDENTIFIED BY 'Rayan@2026';
+CREATE USER 'Foday_Kamara'@'localhost' IDENTIFIED BY 'Foday@2026';
+```
+
+### Granting Privileges
+```sql
+-- Full access for the administrator
+GRANT ALL PRIVILEGES ON public_health_clinic.* TO 'Abdul_Karim'@'localhost';
+
+-- Moderate access for Rayan Martin
+GRANT SELECT, INSERT, UPDATE, FILE ON public_health_clinic.* TO 'Rayan_Martin'@'localhost';
+
+-- Limited access for Foday Kamara
+GRANT SELECT, INSERT ON public_health_clinic.* TO 'Foday_Kamara'@'localhost';
+
+FLUSH PRIVILEGES;
+```
+
+### Changing Passwords
+```sql
+ALTER USER 'Abdul_Karim'@'localhost' IDENTIFIED BY 'Karim@NewPass1';
+ALTER USER 'Rayan_Martin'@'localhost' IDENTIFIED BY 'Rayan@NewPass1';
+ALTER USER 'Foday_Kamara'@'localhost' IDENTIFIED BY 'Foday@NewPass1';
+```
+
+### Viewing Grants
+```sql
+SHOW GRANTS FOR 'Abdul_Karim'@'localhost';
+SHOW GRANTS FOR 'Rayan_Martin'@'localhost';
+SHOW GRANTS FOR 'Foday_Kamara'@'localhost';
+```
+
+### 🔐 phpMyAdmin Authentication
+
+To enforce login-based access in phpMyAdmin, the authentication type in `config.inc.php` was changed from `'config'` (automatic root login) to `'cookie'` (login screen), and the hardcoded credentials were commented out:
+
+```php
+$cfg['Servers'][$i]['auth_type'] = 'cookie';
+// $cfg['Servers'][$i]['user'] = 'root';
+// $cfg['Servers'][$i]['password'] = '';
+```
+
+This ensures that every user must log in with their own MySQL credentials, making all database actions traceable and preventing unauthorized access to sensitive patient health records.
+
+---
 
 ## Notes
 
-Dates – Sample data uses 2026 to remain future‑proof.
-
-CHECK constraint – Requires MySQL 8.0.16+ for full enforcement. Older versions ignore it but the script still runs.
-
-Foreign key order – Inserts respect dependency order: Patient → Health_Worker → Appointment → Medical_Diagnosis → Treatment.
-
-Renames – The original Diagnoses table is renamed to Medical_Diagnosis and Reason column to Visit_Reason for clarity.
-
-Realistic data – Patient names and addresses reflect Sierra Leonean cities (Freetown, Makeni, Bo, etc.). Medications are commonly used in public health.
+- **Dates** – Sample data uses 2026 to remain future‑proof.
+- **CHECK constraint** – Requires MySQL 8.0.16+ for full enforcement. Older versions ignore it but the script still runs.
+- **Foreign key order** – Inserts respect dependency order: Patient → Health_Worker → Appointment → Medical_Diagnosis → Treatment.
+- **Renames** – The original `Diagnoses` table is renamed to `Medical_Diagnosis` and `Reason` column to `Visit_Reason` for clarity.
+- **Realistic data** – Patient names and addresses reflect Sierra Leonean cities (Freetown, Makeni, Bo, etc.). Medications are commonly used in public health.
